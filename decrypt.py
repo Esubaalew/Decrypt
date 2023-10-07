@@ -12,6 +12,7 @@ import sys
 import os
 import platform
 import getpass
+import time
 
 
 def check_internet_connection():
@@ -22,8 +23,8 @@ def check_internet_connection():
         bool: True if connected, False otherwise.
     '''
     try:
-        # Try pinging Google's DNS server
-        response = os.system("ping 8.8.8.8")
+        # Redirect output to null
+        response = os.system("ping 8.8.8.8 > nul 2>&1")
         return response == 0
     except Exception as e:
         print(f"Error checking internet connection: {e}")
@@ -37,13 +38,15 @@ def install_required_modules():
     Raises:
         SystemExit: If the required modules cannot be installed.
     '''
-    required_modules = ['PyPDF2', 'pycryptodome']
+    required_modules = ['PyPDF2', 'PyCryptodome']
     for module in required_modules:
         try:
             __import__(module)
         except ImportError:
-            print(f"{module} module not found. Installing...")
+            print(f"\033[0;36m{module} module not found. Installing...")
             os.system(f"pip install {module}")
+        else:
+            print(f"\033[0;33m{module} module already installed.")
 
 
 def generate_password(name):
@@ -92,12 +95,15 @@ def decrypt_pdf(input_path, output_path, name):
             if pdf_reader.decrypt(password):
                 with open(output_path, 'wb') as output_file:
                     pdf_writer = PdfWriter()
-                    pdf_writer.add_page(pdf_reader.pages[0])
+                    for page in pdf_reader.pages:
+                        pdf_writer.add_page(page)
                     pdf_writer.write(output_file)
                 print(
                     "\033[32mPDF decrypted successfully.\033[0m Decrypted file saved as \033[32m", output_path, "\033[0m")
                 os.system(f'start {output_path}' if os.name ==
                           'nt' else f'xdg-open {output_path}')
+                time.sleep(1)
+                os.remove(f'{output_path}')
             else:
                 print(
                     "\033[31mIncorrect name. Unable to decrypt the PDF.\033[0m")
@@ -170,7 +176,7 @@ def main():
         sys.exit(1)
 
     user_name = getpass.getpass(
-        prompt='\033[34mEnter your name[Don\'t worry if what you enter is invisible]:\033[0m ')
+        prompt='\033[1;33mEnter your name[Don\'t worry if what you enter is invisible]:\033[0m ')
 
     output_pdf_path = f'decrypted_{os.path.basename(input_pdf_path)}'
 
