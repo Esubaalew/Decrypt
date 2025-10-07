@@ -17,45 +17,6 @@ tags: opensource, cli, rust, repl, rust-lang, crates, rust-programming
 
 ---
 
-<details>
-<summary><strong>Table of contents</strong></summary>
-<ul>
-<li><a href="#website-and-docs">Website and Docs</a></li>
-<li><a href="#overview---universal-multi-language-runner">Overview</a>
-<ul>
-<li><a href="#what-is-run">What is run?</a></li>
-<li><a href="#who-is-this-for">Who is this for?</a></li>
-<li><a href="#why-was-run-created">Why was run created?</a></li>
-<li><a href="#why-rust">Why Rust?</a></li>
-</ul>
-</li>
-<li><a href="#-highlights">Highlights</a></li>
-<li><a href="#-quickstart">Quickstart</a></li>
-<li><a href="#-installation">Installation</a></li>
-<li><a href="#-how-it-works">How it works</a></li>
-<li><a href="#-supported-languages">Supported languages</a>
-<ul>
-<li><a href="#complete-language-aliases-reference">Complete Language Aliases Reference</a></li>
-</ul>
-</li>
-<li><a href="#command-variations---flexible-syntax">Command Variations - Flexible Syntax</a></li>
-<li><a href="#command-line-flags-reference">Command-Line Flags Reference</a></li>
-<li><a href="#%EF%B8%8F-when-to-use---lang-important">⚠️ When to Use --lang (Important!)</a></li>
-<li><a href="#main-function-flexibility">Main Function Flexibility</a></li>
-<li><a href="#-examples">Examples</a></li>
-<li><a href="#-repl">REPL</a>
-<ul>
-<li><a href="#interactive-repl---line-by-line-or-paste-all">Interactive REPL - Line by Line or Paste All</a></li>
-<li><a href="#variable-persistence--language-switching">Variable Persistence & Language Switching</a></li>
-<li><a href="#repl-commands">REPL Commands</a></li>
-</ul>
-</li>
-<li><a href="#stdin-piping-examples">Stdin Piping Examples</a></li>
-<li><a href="#language-specific-notes">Language-Specific Notes</a></li>
-<li><a href="#-license">📄 License</a></li>
-</ul>
-</details>
-
 ---
 
 # Website and Docs
@@ -186,12 +147,10 @@ cargo install --path .</code></pre>
 <summary><strong>Debian / Ubuntu</strong></summary>
 <pre><code class="language-bash">curl -LO https://github.com/Esubaalew/run/releases/latest/download/run-deb.sha256
 DEB_FILE=$(awk 
-
 <details>
 <summary><strong>Windows (Scoop)</strong></summary>
 <pre><code class="language-powershell">scoop install https://github.com/Esubaalew/run/releases/latest/download/run-scoop.json</code></pre>
 </details>
-
 <details>
 <summary><strong>Install script (macOS / Linux)</strong></summary>
 <pre><code class="language-bash">curl -fsSLO https://raw.githubusercontent.com/Esubaalew/run/master/scripts/install.sh
@@ -199,7 +158,6 @@ chmod +x install.sh
 ./install.sh --add-path           # optional: append ~/.local/bin to PATH</code></pre>
 <p>Pass <code>--version v0.2.0</code>, <code>--prefix /usr/local/bin</code>, or <code>--repo yourname/run</code> to customize the install.</p>
 </details>
-
 <details>
 <summary><strong>Download the archive directly</strong></summary>
 <ol>
@@ -208,53 +166,39 @@ chmod +x install.sh
 <li>Optionally execute the bundled <code>install.sh</code> to handle the copy for you.</li>
 </ol>
 </details>
-
 <details>
 <summary><strong>Build from source</strong></summary>
 <pre><code class="language-bash">cargo install run-kit</code></pre>
 <p>The project targets Rust 1.70+. Installing from crates.io gives you the same <code>run</code> binary that CI publishes; use <code>--force</code> when upgrading to a newer release.</p>
 </details>
-
-Verify installation:
-
-```bash
-# Verify installation
-run --version
-```
-
-Output:
-
-```plaintext
-run 0.1.1
-```
-
----
-
-## How it works
-
-`run` shells out to real toolchains under the hood. Each `LanguageEngine` implements a small trait that knows how to:
-
-1. Detect whether the toolchain is available (e.g. `python3`, `go`, `rustc`).
-    
-2. Prepare a temporary workspace (compilation for compiled languages, transient scripts for interpreters).
-    
-3. Execute snippets, files, or stdin streams and surface stdout/stderr consistently.
-    
-4. Manage session state for the interactive REPL (persistent modules, stateful scripts, or regenerated translation units).
-    
-
-This architecture keeps the core lightweight while making it easy to add new runtimes or swap implementations.
-
----
-
-## Supported languages
-
-`run` supports 25+ languages:
-
-Run supports 25 programming languages out of the box, covering a wide range of paradigms and use cases:
-
-```plaintext
-# Scripting Languages
+<p>Verify installation:</p>
+<pre><code class="language-bash"># Verify installation
+run --version</code></pre>
+<p>Output:</p>
+<pre><code class="language-plaintext">run 0.1.1</code></pre>
+<hr />
+<h2>How it works</h2>
+<p><code>run</code> shells out to real toolchains under the hood. Each <code>LanguageEngine</code> implements a small trait that knows how to:</p>
+<ol>
+<li>
+<p>Detect whether the toolchain is available (e.g. <code>python3</code>, <code>go</code>, <code>rustc</code>).</p>
+</li>
+<li>
+<p>Prepare a temporary workspace (compilation for compiled languages, transient scripts for interpreters).</p>
+</li>
+<li>
+<p>Execute snippets, files, or stdin streams and surface stdout/stderr consistently.</p>
+</li>
+<li>
+<p>Manage session state for the interactive REPL (persistent modules, stateful scripts, or regenerated translation units).</p>
+</li>
+</ol>
+<p>This architecture keeps the core lightweight while making it easy to add new runtimes or swap implementations.</p>
+<hr />
+<h2>Supported languages</h2>
+<p><code>run</code> supports 25+ languages:</p>
+<p>Run supports 25 programming languages out of the box, covering a wide range of paradigms and use cases:</p>
+<pre><code class="language-plaintext"># Scripting Languages
 Python, JavaScript, Ruby, Bash, Lua, Perl, PHP
 
 # Compiled Languages
@@ -265,461 +209,121 @@ TypeScript, Haskell, Elixir, Julia
 
 # Specialized Languages
 R (Statistical computing)
-Dart (Mobile development)
-```
-
-| Category | Languages & aliases | Toolchain expectations |
-| --- | --- | --- |
-| **Scripting & shells** | Bash (`bash`), Python (`py`, `python`), Ruby (`rb`, `ruby`), PHP (`php`), Perl (`perl`), Lua (`lua`), R (`r`), Elixir (`ex`, `elixir`) | Matching interpreter on `PATH` |
-| **Web & typed scripting** | JavaScript (`js`, `node`), TypeScript (`ts`, `deno`), Dart (`dart`), Kotlin (`kt`, `kotlin`) | `node`, `deno`, `dart`, `kotlinc` + JRE |
-| **Systems & compiled** | C (`c`), C++ (`cpp`, `cxx`), Rust (`rs`, `rust`), Go (`go`), Swift (`swift`), Zig (`zig`), Nim (`nim`), Haskell (`hs`, `haskell`), Crystal (`cr`, `crystal`), C# (`cs`, `csharp`), Java (`java`), Julia (`jl`, `julia`) | Respective compiler/toolchain |
-
-### Categorization notes
-
-The categories above are usage-based to match how you’ll likely run code `run` rather than strict language taxonomies. Examples:
-
-* Kotlin can target the JVM, Native, or JavaScript. If you’re using Kotlin/JS, it behaves more closely to the “Web & typed scripting” workflow, while Kotlin/JVM fits the “Systems & compiled” (with a JRE) approach.
-    
-* Swift is listed under “Systems & compiled” because `swiftc` produces native binaries; however, you can still use it interactively via `run` for scripting-like workflows.
-    
-* TypeScript typically runs at runtime via Node or Deno (after being transpiled), which is why it appears under “Web & typed scripting.”
-    
-
-These groupings optimize for how commands are invoked and which toolchains `run` detects and orchestrates.
-
-### Complete Language Aliases Reference
-
-Every language in run has multiple aliases for convenience. Use whichever feels most natural to you:
-
-| Alias | Description |
-| --- | --- |
-| `python, py, py3, python3` | Python programming language |
-| `javascript, js, node, nodejs` | JavaScript (Node.js runtime) |
-| `typescript, ts, ts-node, deno` | TypeScript with type checking |
-| `rust, rs` | Rust systems programming language |
-| `go, golang` | Go programming language |
-| `c, gcc, clang` | C programming language |
-| `cpp, c++, g++` | C++ programming language |
-| `java` | Java programming language |
-| `csharp, cs, dotnet` | C# (.NET) |
-| `ruby, rb, irb` | Ruby programming language |
-| `bash, sh, shell, zsh` | Bash shell scripting |
-| `lua, luajit` | Lua scripting language |
-| `perl, pl` | Perl programming language |
-| `php, php-cli` | PHP scripting language |
-| `haskell, hs, ghci` | Haskell functional language |
-| `elixir, ex, exs, iex` | Elixir functional language |
-| `julia, jl` | Julia's scientific computing |
-| `dart, dartlang, flutter` | Dart language (Flutter) |
-| `swift, swiftlang` | Swift programming language |
-| `kotlin, kt, kts` | Kotlin (JVM/Native) |
-| `r, rscript, cran` | R statistical computing |
-| `crystal, cr, crystal-lang` | Crystal language |
-| `zig, ziglang` | Zig systems language |
-| `nim, nimlang` | Nim programming language |
-| `ocaml` | OCaml functional language |
-| `clojure, clj` | Clojure Lisp dialect |
-
----
-
-## Command Variations - Flexible Syntax
-
-Run supports multiple command formats to fit your workflow. You can be explicit with --lang or let run auto-detect the language:
-
-1. Full syntax with --lang and --code
-    
-
-```bash
-run --lang rust --code "fn main() { println!(\"hello from rust\"); }"
-```
-
-Output:
-
-```plaintext
-hello from rust
-```
-
-2. Shorthand flags (-l for --lang, -c for --code)
-    
-
-```bash
-run -l rust -c "fn main() { println!(\"hello from rust\"); }"
-```
-
-3. Omit --code flag (auto-detected)
-    
-
-```bash
-run --code "fn main() { println!(\"hello from rust\"); }"
-```
-
-Output:
-
-```plaintext
-hello from rust
-```
-
-4. Shorthand - just the code
-    
-
-```bash
-run "fn main() { println!(\"hello from rust\"); }"
-```
-
-Output:
-
-```plaintext
-hello from rust
-```
-
-5. Language first, then code
-    
-
-```bash
-run rust "fn main() { println!(\"hello from rust\"); }"
-```
-
-Output:
-
-```plaintext
-hello from rust
-```
-
----
-
-## Command-Line Flags Reference
-
-run provides both long-form and short-form flags for convenience:
-
-```bash
-# Language specification
---lang, -l          Specify the programming language
-run --lang python "print('hello')"
-run -l python "print('hello')"
-
-# Code input
---code, -c          Provide code as a string
-run --code "print('hello')"
-run -c "print('hello')"
-
-# Combined usage
-run -l python -c "print('hello')"
-run --lang python --code "print('hello')"
-```
-
----
-
-## ⚠️ When to Use --lang (Important!)
-
-While run can auto-detect languages, ambiguous syntax can confuse. For example, print('hello') looks similar in Python, Ruby, Lua, and other languages. Always use --lang for correctness when the syntax is ambiguous or when you need deterministic behavior.
-
-```bash
-# ❌ Ambiguous - may choose wrong language
-run "print('hello')"
-```
-
-Output:
-
-```plaintext
-hello  # But which language was used?
-```
-
-```bash
-# ✅ Explicit - always correct
-run --lang python "print('hello')"
-```
-
-Output:
-
-```plaintext
-hello  # Guaranteed to use Python
-```
-
-RECOMMENDATION: Always use --lang for correctness when:
-
-• The syntax is ambiguous across multiple languages
-
-• You want to ensure the exact language is used
-
-• You're writing scripts or automation that must be deterministic
-
----
-
-## Main Function Flexibility
-
-For compiled languages (Rust, Go, C, C++, Java, etc.), run is smart about main functions:
-
-• Write complete programs with main functions
-
-• Write code without main functions (run wraps it automatically)
-
-• Both approaches work in REPL mode and inline execution
-
-Go Example - With main function
-
-```bash
-$ run go
-run universal REPL. Type :help for commands.
-
-go>>> package main
-import "fmt"
-func main() {
-    fmt.Println("Hello, world!")
-}
-Hello, world!
-```
-
-Go Example - Without main function
-
-```plaintext
-go>>> fmt.Println("Hello, world!")
-Hello, world!
-```
-
----
-
-## Examples
-
-Real programs live under the [`examples/`](examples) tree—each language has a `hello` and a `progress` scenario. The headers document expected output so you can diff your toolchain.
-
-```bash
-run examples/rust/hello.rs
-run examples/typescript/progress.ts
-run examples/python/counter.py
-```
-
----
-
-## REPL
-
-Being inside REPL, we can use the following commands
-
-The REPL supports several built-in commands for managing your session:
-
-| Command | Purpose |
-| --- | --- |
-| `:help` | List available meta commands |
-| `:languages` | Show detected engines and status |
-| `:lang <id>` or `:<alias>` | Switch the active language (`:py`, `:go`, …) |
-| `:detect on/off/toggle` | Control snippet language auto-detection |
-| `:load path/to/file` | Execute a file inside the current session |
-| `:reset` | Clear the accumulated session state |
-| `:exit` / `:quit` | Leave the REPL |
-
-| Alias | Description |
-| --- | --- |
-| `:help` | Show available REPL commands |
-| `:quit or :q` | Exit the REPL |
-| `:clear or :c` | Clear the screen |
-| `:reset` | Reset the session (clear all variables) |
-| `:lang <language>` | Switch to a different language |
-| `:py, :js, :go, etc.` | Quick language switch shortcuts |
-
-### Interactive REPL - Line by Line or Paste All
-
-The REPL mode is incredibly flexible. You can:
-
-• Type code line by line interactively
-
-• Paste entire programs at once
-
-• Mix both approaches in the same session
-
-This works for ALL supported languages!
-
-Python Example - Paste entire program
-
-```bash
-$ run python
-python>>> def fibonacci(n):
-    if n <= 1:
-        return n
-    return fibonacci(n-1) + fibonacci(n-2)
-
-for i in range(10):
-    print(f"F({i}) = {fibonacci(i)}")
-F(0) = 0
-F(1) = 1
-F(2) = 1
-F(3) = 2
-F(4) = 3
-F(5) = 5
-F(6) = 8
-F(7) = 13
-F(8) = 21
-F(9) = 34
-```
-
-Python Example - Line by line
-
-```plaintext
-python>>> x = 10
-python>>> y = 20
-python>>> print(x + y)
-30
-```
-
-### Variable Persistence & Language Switching
-
-Variables persist across REPL commands within the same session. You can also switch languages on the fly using the :lang command (e.g., :c, :py, :go):
-
-In REPL mode, variables persist across commands within the same language session. You can also switch languages on the fly using :lang commands.
-
-When you switch languages, variables from the previous language do NOT carry over (each language has its own isolated session).
-
-Variable Persistence Example
-
-```plaintext
-$ run go
-go>>> x := 10
-go>>> x
-10
-
-go>>> :c
-switched to c
-
-c>>> int x = 10;
-c>>> x
-10
-c>>> 10 + 10
-20
-
-c>>> :py
-switched to python
-
-python>>> y = 10
-python>>> y
-10
-python>>> print(y)
-10
-python>>> z = 4
-python>>> z is y
-False
-python>>> z == y
-False
-```
-
-### Language Switching Commands
-
-Switch between languages instantly in REPL mode using colon commands
-
-### Built-in REPL Commands
-
-```plaintext
-:help              → Show help and available commands
-:languages         → List all supported languages
-:clear             → Clear the screen
-:exit or :quit     → Exit the REPL
-:lang <language>   → Switch to a different language
-Ctrl+D             → Exit the REPL
-```
-
----
-
-## Stdin Piping Examples
-
-`run` supports piping input from stdin to your code snippets across all languages. Here are more examples for different languages:
-
-### Node.js (JSON Processing)
-
-```bash
-echo '{"name":"Ada"}' | run js --code "const data = JSON.parse(require('fs').readFileSync(0, 'utf8')); console.log(`hi ${data.name}`)"
-```
-
-Output:
-
-```plaintext
-hi Ada
-```
-
-### Python (Uppercase Conversion)
-
-```bash
-echo "Hello from stdin" | run python --code "import sys; print(sys.stdin.read().strip().upper())"
-```
-
-Output:
-
-```plaintext
-HELLO FROM STDIN
-```
-
-### Go (Greeting)
-
-```bash
-echo "world" | run go --code 'import "fmt"; import "bufio"; import "os"; scanner := bufio.NewScanner(os.Stdin); scanner.Scan(); fmt.Printf("Hello, %s!\n", scanner.Text())'
-```
-
-Output:
-
-```plaintext
-Hello, world!
-```
-
-### Ruby (Line Counting)
-
-```bash
-echo -e "line1\nline2\nline3" | run ruby --code "puts gets(nil).lines.count"
-```
-
-Output:
-
-```plaintext
-3
-```
-
-### Bash (Echo with Prefix)
-
-```bash
-echo "input text" | run bash --code 'read line; echo "Processed: $line"'
-```
-
-Output:
-
-```plaintext
-Processed: input text
-```
-
----
-
-## Language-Specific Notes
-
-For detailed usage, quirks, and best practices for each language, visit the dedicated documentation:
-
-* [Python](https://run.esubalew.et/): Tips for scripting, data processing, and REPL persistence.
-    
-* [JavaScript/Node.js](https://run.esubalew.et/): Async code, modules, and stdin handling.
-    
-* [Rust](https://run.esubalew.et/): Compilation flags, error handling, and workspace management.
-    
-* [Go](https://run.esubalew.et/): Package imports, build optimizations, and concurrency examples.
-    
-* [C/C++](https://run.esubalew.et/): Compiler selection, linking, and multi-file support.
-    
-* [Java](https://run.esubalew.et/): Classpath management, JVM args, and enterprise patterns.
-    
-* [TypeScript](https://run.esubalew.et/): Type checking, Deno vs Node, and transpilation.
-    
-* [And more...](https://run.esubalew.et/docs/overview) for all 25+ languages, including Ruby, PHP, Haskell, Elixir, and specialized ones like R and Julia.
-    
-
-Each language doc covers:
-
-* Toolchain requirements and detection
-    
-* REPL-specific features (e.g., persistent state)
-    
-* Common pitfalls and workarounds
-    
-* Advanced examples (e.g., file I/O, networking)
-    
-
----
-
-## License
-
-Apache 2.0. See [LICENSE](LICENSE) for details.
-
----
-
-Built with ❤️ in Rust. If `run` unblocks your workflow, star the repo, and share it with other polyglot hackers.
+Dart (Mobile development)</code></pre>
+<table>
+<thead>
+<tr>
+<th>Category</th>
+<th>Languages & aliases</th>
+<th>Toolchain expectations</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Scripting & shells</strong></td>
+<td>Bash (<code>bash</code>), Python (<code>py</code>, <code>python</code>), Ruby (<code>rb</code>, <code>ruby</code>), PHP (<code>php</code>), Perl (<code>perl</code>), Lua (<code>lua</code>), R (<code>r</code>), Elixir (<code>ex</code>, <code>elixir</code>)</td>
+<td>Matching interpreter on <code>PATH</code></td>
+</tr>
+<tr>
+<td><strong>Web & typed scripting</strong></td>
+<td>JavaScript (<code>js</code>, <code>node</code>), TypeScript (<code>ts</code>, <code>deno</code>), Dart (<code>dart</code>), Kotlin (<code>kt</code>, <code>kotlin</code>)</td>
+<td><code>node</code>, <code>deno</code>, <code>dart</code>, <code>kotlinc</code> + JRE</td>
+</tr>
+<tr>
+<td><strong>Systems & compiled</strong></td>
+<td>C (<code>c</code>), C++ (<code>cpp</code>, <code>cxx</code>), Rust (<code>rs</code>, <code>rust</code>), Go (<code>go</code>), Swift (<code>swift</code>), Zig (<code>zig</code>), Nim (<code>nim</code>), Haskell (<code>hs</code>, <code>haskell</code>), Crystal (<code>cr</code>, <code>crystal</code>), C# (<code>cs</code>, <code>csharp</code>), Java (<code>java</code>), Julia (<code>jl</code>, <code>julia</code>)</td>
+<td>Respective compiler/toolchain</td>
+</tr>
+</tbody>
+</table>
+<h3>Categorization notes</h3>
+<p>The categories above are usage-based to match how you’ll likely run code <code>run</code> rather than strict language taxonomies. Examples:</p>
+<ul>
+<li>
+<p>Kotlin can target the JVM, Native, or JavaScript. If you’re using Kotlin/JS, it behaves more closely to the “Web & typed scripting” workflow, while Kotlin/JVM fits the “Systems & compiled” (with a JRE) approach.</p>
+</li>
+<li>
+<p>Swift is listed under “Systems & compiled” because <code>swiftc</code> produces native binaries; however, you can still use it interactively via <code>run</code> for scripting-like workflows.</p>
+</li>
+<li>
+<p>TypeScript typically runs at runtime via Node or Deno (after being transpiled), which is why it appears under “Web & typed scripting.”</p>
+</li>
+</ul>
+<p>These groupings optimize for how commands are invoked and which toolchains <code>run</code> detects and orchestrates.</p>
+<h3>Complete Language Aliases Reference</h3>
+<p>Every language in run has multiple aliases for convenience. Use whichever feels most natural to you:</p>
+<table>
+<thead>
+<tr>
+<th>Alias</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>python, py, py3, python3</code></td>
+<td>Python programming language</td>
+</tr>
+<tr>
+<td><code>javascript, js, node, nodejs</code></td>
+<td>JavaScript (Node.js runtime)</td>
+</tr>
+<tr>
+<td><code>typescript, ts, ts-node, deno</code></td>
+<td>TypeScript with type checking</td>
+</tr>
+<tr>
+<td><code>rust, rs</code></td>
+<td>Rust systems programming language</td>
+</tr>
+<tr>
+<td><code>go, golang</code></td>
+<td>Go programming language</td>
+</tr>
+<tr>
+<td><code>c, gcc, clang</code></td>
+<td>C programming language</td>
+</tr>
+<tr>
+<td><code>cpp, c++, g++</code></td>
+<td>C++ programming language</td>
+</tr>
+<tr>
+<td><code>java</code></td>
+<td>Java programming language</td>
+</tr>
+<tr>
+<td><code>csharp, cs, dotnet</code></td>
+<td>C# (.NET)</td>
+</tr>
+<tr>
+<td><code>ruby, rb, irb</code></td>
+<td>Ruby programming language</td>
+</tr>
+<tr>
+<td><code>bash, sh, shell, zsh</code></td>
+<td>Bash shell scripting</td>
+</tr>
+<tr>
+<td><code>lua, luajit</code></td>
+<td>Lua scripting language</td>
+</tr>
+<tr>
+<td><code>perl, pl</code></td>
+<td>Perl programming language</td>
+</tr>
+<tr>
+<td><code>php, php-cli</code></td>
+<td>PHP scripting language</td>
+</tr>
+<tr>
+<td><code>haskell, hs, ghci</code></td>
+<td>Haskell functional language</td>
+</tr>
+<tr>
+<td><code>elixir, ex, exs, iex</code></td>
+<td>Elixir functional language</td>
+</tr>
+<tr>
+<td><code>julia, jl</code></td>
+<td>Julia
