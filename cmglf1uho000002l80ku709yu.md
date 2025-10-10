@@ -570,6 +570,7 @@ run
 ## Links & Resources
 
 * **Run-Kit GitHub:** [https://github.com/Esubaalew/run](https://github.com/Esubaalew/run)
+* **Run-Kit-analytics GitHub:** [https://github.com/Esubaalew/run-kit-analytics](https://github.com/Esubaalew/run-kit-analytics)
 * **Documentation:** [https://run.esubalew.et/docs/overview](https://run.esubalew.et/docs/overview)
 * **Install via Cargo:** `cargo install run-kit`
 * **Homebrew (macOS):** `brew install https://github.com/Esubaalew/run/releases/latest/download/homebrew-run.rb`
